@@ -1,20 +1,20 @@
 <template>
     <div class="physton-prompt" :name="name">
-        <div :class="['prompt-main', hidePanel ? 'fold': '']" @click="onPromptMainClick">
+        <div :class="['prompt-main', hidePanel ? 'fold' : '']" @click="onPromptMainClick">
             <div class="prompt-header">
                 <div class="prompt-unfold" @click="onUnfoldClick">
-                    <icon-svg class="hover-scale-120" name="unfold"/>
+                    <icon-svg class="hover-scale-120" name="unfold" />
                 </div>
                 <div class="prompt-header-title">{{ neg ? getLang('negative_prompt') : getLang('prompt') }}</div>
                 <div class="prompt-header-counter" v-show="counterText">({{ counterText }})</div>
                 <div class="prompt-header-extend">
                     <div class="extend-content">
                         <div class="extend-btn-group">
-                            <div class="extend-btn-item" v-tooltip="'Language: ' + langName"
-                                 @click="$emit('click:selectLanguage', $event)">
-                                <icon-svg class="hover-scale-120" name="i18n"/>
+                            <div class="extend-btn-item text-lang-name" v-tooltip="'Language: ' + langName"
+                                @click="$emit('click:selectLanguage', $event)">
+                                <div class="hover-scale-120"> {{ langName }}</div>
                             </div>
-                            <div :class="['extend-btn-item', isLatestVersion ? '' : 'red-dot']">
+                            <!-- <div :class="['extend-btn-item', isLatestVersion ? '' : 'red-dot']">
                                 <icon-svg class="hover-scale-120" name="setting" v-tooltip="getLang('setting_desc')"/>
                                 <div class="setting-box" @mouseenter="onSettingBoxMouseEnter">
                                     <div v-if="translateApiItem.name && !isEnglish" class="extend-btn-item"
@@ -73,14 +73,14 @@
                                             </div>
                                         </template>
                                     </template>
-                                    <!--<div class="gradio-checkbox hover-scale-120">
+                                    <div class="gradio-checkbox hover-scale-120">
                                         <label v-tooltip="getLang('is_remove_space')">
                                             <input type="checkbox" name="auto_remove_space" value="1"
                                                    :checked="autoRemoveSpace"
                                                    @change="$emit('update:autoRemoveSpace', $event.target.checked)">
                                             <icon-svg name="remove-space"/>
                                         </label>
-                                    </div>-->
+                                    </div>
                                     <div class="gradio-checkbox hover-scale-120">
                                         <label v-tooltip="getLang('whether_to_enable_tooltip')">
                                             <input type="checkbox" name="enable_tooltip" value="1"
@@ -103,12 +103,12 @@
                                         </label>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
                 <!--<div class="prompt-header-break"></div>-->
-                <div class="prompt-header-extend">
+                <!-- <div class="prompt-header-extend">
                     <div class="extend-content">
                         <div class="extend-btn-group">
                             <div class="extend-btn-item" ref="historyButton" v-tooltip="getLang('history')"
@@ -121,102 +121,96 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <template v-if="!isEnglish">
                     <div class="prompt-header-extend">
                         <div class="extend-content">
                             <div class="extend-btn-group">
                                 <template v-if="canOneTranslate">
-                                    <div class="extend-btn-item"
-                                         v-tooltip="getLang('one_translate_all_keywords')"
-                                         @click="onTranslatesToLocalClick">
-                                        <icon-svg v-if="!loading['all_local']" class="hover-scale-120" name="translate"/>
-                                        <icon-svg v-if="loading['all_local']" class="hover-scale-120" name="loading"/>
+                                    <div class="extend-btn-item" v-tooltip="getLang('one_translate_all_keywords')"
+                                        @click="onTranslatesToLocalClick">
+                                        <icon-svg v-if="!loading['all_local']" class="hover-scale-120" name="translate" />
+                                        <icon-svg v-if="loading['all_local']" class="hover-scale-120" name="loading" />
                                     </div>
                                 </template>
                                 <template v-else>
                                     <div class="extend-btn-item" v-tooltip="getLang('translate_keywords_to_local_language')"
-                                 @click="onTranslatesToLocalClick">
-                                        <icon-svg v-if="!loading['all_local']" class="hover-scale-120" name="translate"/>
-                                        <icon-svg v-if="loading['all_local']" class="hover-scale-120" name="loading"/>
+                                        @click="onTranslatesToLocalClick">
+                                        <icon-svg v-if="!loading['all_local']" class="hover-scale-120" name="translate" />
+                                        <icon-svg v-if="loading['all_local']" class="hover-scale-120" name="loading" />
                                     </div>
                                     <div class="extend-btn-item" v-tooltip="getLang('translate_all_keywords_to_english')"
-                                         @click="onTranslatesToEnglishClick">
-                                        <icon-svg v-if="!loading['all_en']" class="hover-scale-120" name="english"/>
-                                        <icon-svg v-if="loading['all_en']" class="hover-scale-120" name="loading"/>
+                                        @click="onTranslatesToEnglishClick">
+                                        <icon-svg v-if="!loading['all_en']" class="hover-scale-120" name="english" />
+                                        <icon-svg v-if="loading['all_en']" class="hover-scale-120" name="loading" />
                                     </div>
                                 </template>
                             </div>
                         </div>
                     </div>
                 </template>
-                <div class="prompt-header-extend">
+                <!-- <div class="prompt-header-extend">
                     <div class="extend-content">
                         <div class="extend-btn-group">
                             <div class="extend-btn-item" v-tooltip="getLang('copy_keywords_to_clipboard')"
-                                 @click="onCopyAllTagsClick">
-                                <icon-svg class="hover-scale-120" name="copy"/>
+                                @click="onCopyAllTagsClick">
+                                <icon-svg class="hover-scale-120" name="copy" />
                             </div>
                             <div class="extend-btn-item" v-tooltip="getLang('delete_all_keywords')"
-                                 @click="onDeleteAllTagsClick">
-                                <icon-svg class="hover-scale-120" name="remove"/>
+                                @click="onDeleteAllTagsClick">
+                                <icon-svg class="hover-scale-120" name="remove" />
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="prompt-header-extend" v-if="!neg">
+                </div> -->
+                <!-- <div class="prompt-header-extend" v-if="!neg">
                     <div class="extend-content">
                         <div class="extend-btn-group">
                             <div class="extend-btn-item" v-tooltip="getLang('use_chatgpt_gen_prompts')"
-                                 @click="$emit('click:showChatgpt', $event)">
-                                <icon-svg class="hover-scale-120" name="chatgpt"/>
+                                @click="$emit('click:showChatgpt', $event)">
+                                <icon-svg class="hover-scale-120" name="chatgpt" />
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="prompt-header-extend prompt-append">
+                </div> -->
+                <!-- <div class="prompt-header-extend prompt-append">
                     <div class="extend-content">
                         <div class="gradio-checkbox hover-scale-120">
                             <label v-if="hideDefaultInput" v-tooltip="getLang('show_default_input_box')">
-                                <input type="checkbox" name="hide_default_input" value="1"
-                                       :checked="!hideDefaultInput"
-                                       @change="$emit('update:hideDefaultInput', !$event.target.checked)">
-                                <icon-svg name="input"/>
+                                <input type="checkbox" name="hide_default_input" value="1" :checked="!hideDefaultInput"
+                                    @change="$emit('update:hideDefaultInput', !$event.target.checked)">
+                                <icon-svg name="input" />
                             </label>
                             <label v-else v-tooltip="getLang('hide_default_input_box')">
-                                <input type="checkbox" name="hide_default_input" value="1"
-                                       :checked="!hideDefaultInput"
-                                       @change="$emit('update:hideDefaultInput', !$event.target.checked)">
-                                <icon-svg name="input"/>
+                                <input type="checkbox" name="hide_default_input" value="1" :checked="!hideDefaultInput"
+                                    @change="$emit('update:hideDefaultInput', !$event.target.checked)">
+                                <icon-svg name="input" />
                             </label>
                         </div>
                         <textarea type="text" class="scroll-hide svelte-4xt1ch input-tag-append" ref="promptTagAppend"
-                                  :placeholder="getLang('please_enter_new_keyword')"
-                                  v-tooltip="getLang('enter_to_add')"
-                                  @focus="onAppendTagFocus"
-                                  @blur="onAppendTagBlur"
-                                  @keyup="onAppendTagKeyUp"
-                                  @keydown="onAppendTagKeyDown"></textarea>
+                            :placeholder="getLang('please_enter_new_keyword')" v-tooltip="getLang('enter_to_add')"
+                            @focus="onAppendTagFocus" @blur="onAppendTagBlur" @keyup="onAppendTagKeyUp"
+                            @keydown="onAppendTagKeyDown"></textarea>
 
                         <div class="prompt-append-list" ref="promptAppendList" v-show="showAppendList"
-                             :style="appendListStyle">
+                            :style="appendListStyle">
                             <div v-for="(item, index) in appendList" :key="item.type"
-                                 :class="['prompt-append-group', appendListSelected === index ? 'selected' : '']">
+                                :class="['prompt-append-group', appendListSelected === index ? 'selected' : '']">
                                 <div class="append-group-name" @click="onAppendGroupClick(index, null, $event)">
-                                    <icon-svg class="name-icon" v-if="item.icon === 'wrap'" name="wrap"/>
-                                    <icon-svg class="name-icon" v-else-if="item.icon === 'history'" name="history"/>
-                                    <icon-svg class="name-icon" v-else-if="item.icon === 'favorite'" name="favorite"/>
+                                    <icon-svg class="name-icon" v-if="item.icon === 'wrap'" name="wrap" />
+                                    <icon-svg class="name-icon" v-else-if="item.icon === 'history'" name="history" />
+                                    <icon-svg class="name-icon" v-else-if="item.icon === 'favorite'" name="favorite" />
                                     {{ appendListItemName(item) }}
                                     <span class="arrow-right" v-show="item.children.length > 0"></span>
                                 </div>
                                 <div class="append-group-list" ref="promptAppendListChildren"
-                                     v-show="item.children.length > 0">
+                                    v-show="item.children.length > 0">
                                     <div v-for="(child, childIndex) in item.children" :key="childIndex"
-                                         ref="promptAppendListChild"
-                                         :class="['append-item', appendListChildSelected === childIndex ? 'selected' : '']"
-                                         @mouseleave="onAppendListChildMouseLeave(index, childIndex, $event)"
-                                         @mouseenter="onAppendListChildMouseEnter(index, childIndex, $event)"
-                                         @click="onAppendGroupClick(index, childIndex, $event)">
+                                        ref="promptAppendListChild"
+                                        :class="['append-item', appendListChildSelected === childIndex ? 'selected' : '']"
+                                        @mouseleave="onAppendListChildMouseLeave(index, childIndex, $event)"
+                                        @mouseenter="onAppendListChildMouseEnter(index, childIndex, $event)"
+                                        @click="onAppendGroupClick(index, childIndex, $event)">
                                         <template v-if="item.type === 'favorite' || item.type === 'history'">
                                             <div class="tags-name" v-if="child.name">{{ child.name }}</div>
                                             <div class="tags-name" v-else>{{ child.prompt }}</div>
@@ -224,7 +218,7 @@
                                     </div>
                                 </div>
                                 <div class="tags-detail"
-                                     v-show="appendListSelected !== null && appendListChildSelected !== null && appendListSelected === index && (item.type === 'favorite' || item.type === 'history')">
+                                    v-show="appendListSelected !== null && appendListChildSelected !== null && appendListSelected === index && (item.type === 'favorite' || item.type === 'history')">
                                     <div class="tags-list">
                                         <template v-for="(tag, tagIndex) in appendListChildItemTags" :key="tagIndex">
                                             <div v-if="tag.type && tag.type === 'wrap'" class="item-wrap"></div>
@@ -238,23 +232,22 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
-            <div :class="['prompt-tags', droping ? 'droping': '', (dropIsSelecting || (dropIsEnd && dropTags.length)) ? 'selecting' : '']" ref="promptTags"
-                 @mousedown="onDropMouseDown"
-                 @mousemove="onDropMouseMove"
-                 @mouseup="onDropMouseUp">
+            <div :class="['prompt-tags', droping ? 'droping' : '', (dropIsSelecting || (dropIsEnd && dropTags.length)) ? 'selecting' : '']"
+                ref="promptTags" @mousedown="onDropMouseDown" @mousemove="onDropMouseMove" @mouseup="onDropMouseUp">
                 <div class="prompt-tags-list" ref="promptTagsList">
-                    <div v-for="(tag, index) in tags" :key="tag.id" :class="['prompt-tag', tag.disabled ? 'disabled': '', tag.type === 'wrap' ? 'wrap-tag' : '']"
-                         :ref="'promptTag-' + tag.id" :data-id="tag.id">
-                        <div class="prompt-tag-main" @mouseenter="onTagMouseEnter(tag.id)" @mousemove.stop="onTagMouseMove(tag.id)">
+                    <div v-for="(tag, index) in tags" :key="tag.id"
+                        :class="['prompt-tag', tag.disabled ? 'disabled' : '', tag.type === 'wrap' ? 'wrap-tag' : '']"
+                        :ref="'promptTag-' + tag.id" :data-id="tag.id">
+                        <div class="prompt-tag-main" @mouseenter="onTagMouseEnter(tag.id)"
+                            @mousemove.stop="onTagMouseMove(tag.id)">
                             <div class="prompt-tag-edit">
                                 <template v-if="tag.type === 'wrap'">
-                                    <div class="prompt-tag-value"
-                                         :ref="'promptTagValue-' + tag.id"
-                                         v-tooltip="getLang('line_break_character') + '<br/>' + getLang('drop_to_order')"
-                                         style="width: 100%">
-                                        <icon-svg name="wrap"/>
+                                    <div class="prompt-tag-value" :ref="'promptTagValue-' + tag.id"
+                                        v-tooltip="getLang('line_break_character') + '<br/>' + getLang('drop_to_order')"
+                                        style="width: 100%">
+                                        <icon-svg name="wrap" />
                                     </div>
                                 </template>
                                 <!--<template v-else-if="tag.type === 'favorite'">
@@ -262,23 +255,17 @@
                                 <template v-else-if="tag.type === 'history'">
                                 </template>-->
                                 <template v-else>
-                                    <div v-show="!editing[tag.id]"
-                                         :class="tag.classes"
-                                         :ref="'promptTagValue-' + tag.id"
-                                         v-tooltip="getLang('click_to_edit') + '<br/>' + getLang('dblclick_to_disable') + '<br/>' + getLang('drop_to_order')"
-                                         @click="onTagClick(tag.id, $event)" @dblclick="onTagDblclick(tag.id)" v-html="renderTag(tag.id)">
+                                    <div v-show="!editing[tag.id]" :class="tag.classes" :ref="'promptTagValue-' + tag.id"
+                                        v-tooltip="getLang('click_to_edit') + '<br/>' + getLang('dblclick_to_disable') + '<br/>' + getLang('drop_to_order')"
+                                        @click="onTagClick(tag.id, $event)" @dblclick="onTagDblclick(tag.id)"
+                                        v-html="renderTag(tag.id)">
                                     </div>
                                     <textarea v-show="editing[tag.id]" type="text"
-                                              class="scroll-hide svelte-4xt1ch input-tag-edit"
-                                              :ref="'promptTagEdit-' + tag.id"
-                                              :placeholder="getLang('enter_to_save')"
-                                              :value="tag.value"
-                                              @mousedown.stop=""
-                                              @mousemove.stop=""
-                                              @mouseup.stop=""
-                                              @blur="onTagInputBlur(tag.id)"
-                                              @keydown="onTagInputKeyDown(tag.id, $event)"
-                                              @change="onTagInputChange(tag.id, $event)"></textarea>
+                                        class="scroll-hide svelte-4xt1ch input-tag-edit" :ref="'promptTagEdit-' + tag.id"
+                                        :placeholder="getLang('enter_to_save')" :value="tag.value" @mousedown.stop=""
+                                        @mousemove.stop="" @mouseup.stop="" @blur="onTagInputBlur(tag.id)"
+                                        @keydown="onTagInputKeyDown(tag.id, $event)"
+                                        @change="onTagInputChange(tag.id, $event)"></textarea>
                                     <!--<input v-show="editing[tag.id]" type="text"
                                            class="scroll-hide svelte-4xt1ch input-tag-edit"
                                            :ref="'promptTagEdit-' + tag.id" :placeholder="getLang('enter_to_save')"
@@ -287,101 +274,100 @@
                                            @change="onTagInputChange(tag.id, $event)">-->
                                 </template>
                                 <div class="btn-tag-delete" :ref="'promptTagDelete-' + tag.id"
-                                     @click="onDeleteTagClick(tag.id)" @mousedown.stop=""
-                                     @mousemove.stop="" @mouseup.stop="">
-                                    <icon-svg name="close"/>
+                                    @click="onDeleteTagClick(tag.id)" @mousedown.stop="" @mousemove.stop=""
+                                    @mouseup.stop="">
+                                    <icon-svg name="close" />
                                 </div>
                             </div>
                             <div class="btn-tag-extend" v-show="(tag.type === 'text' || !tag.type)" @mousedown.stop=""
-                                 @mousemove.stop="" @mouseup.stop="">
-                                <vue-number-input class="input-number" :model-value="tag.weightNum" center controls
-                                                  :min="0" :step="0.1" size="small"
-                                                  @update:model-value="onTagWeightNumChange(tag.id, $event)"></vue-number-input>
+                                @mousemove.stop="" @mouseup.stop="">
+                                <vue-number-input class="input-number" :model-value="tag.weightNum" center controls :min="0"
+                                    :step="0.1" size="small"
+                                    @update:model-value="onTagWeightNumChange(tag.id, $event)"></vue-number-input>
                                 <button type="button" v-tooltip="getLang('increase_weight_add_parentheses')"
-                                        @click="onIncWeightClick(tag.id, +1)">
-                                    <icon-svg name="weight-parentheses-inc"/>
+                                    @click="onIncWeightClick(tag.id, +1)">
+                                    <icon-svg name="weight-parentheses-inc" />
                                 </button>
                                 <button type="button" v-tooltip="getLang('increase_weight_subtract_parentheses')"
-                                        @click="onIncWeightClick(tag.id, -1)">
-                                    <icon-svg name="weight-parentheses-dec"/>
+                                    @click="onIncWeightClick(tag.id, -1)">
+                                    <icon-svg name="weight-parentheses-dec" />
                                 </button>
                                 <button type="button" v-tooltip="getLang('decrease_weight_add_brackets')"
-                                        @click="onDecWeightClick(tag.id, +1)">
-                                    <icon-svg name="weight-brackets-inc"/>
+                                    @click="onDecWeightClick(tag.id, +1)">
+                                    <icon-svg name="weight-brackets-inc" />
                                 </button>
                                 <button type="button" v-tooltip="getLang('decrease_weight_subtract_brackets')"
-                                        @click="onDecWeightClick(tag.id, -1)">
-                                    <icon-svg name="weight-brackets-dec"/>
+                                    @click="onDecWeightClick(tag.id, -1)">
+                                    <icon-svg name="weight-brackets-dec" />
                                 </button>
-                                <button type="button"
-                                        v-tooltip="getLang('line_break_character')"
-                                        @click="onWrapTagClick(tag.id)">
-                                    <icon-svg name="wrap"/>
+                                <button type="button" v-tooltip="getLang('line_break_character')"
+                                    @click="onWrapTagClick(tag.id)">
+                                    <icon-svg name="wrap" />
                                 </button>
                                 <button type="button" v-tooltip="getLang('translate_keyword_to_english')"
-                                        v-show="!isEnglish"
-                                        @click="onTranslateToEnglishClick(tag.id)">
-                                    <icon-svg v-if="!loading[tag.id + '_en']" name="english"/>
-                                    <icon-svg v-if="loading[tag.id + '_en']" name="loading"/>
+                                    v-show="!isEnglish" @click="onTranslateToEnglishClick(tag.id)">
+                                    <icon-svg v-if="!loading[tag.id + '_en']" name="english" />
+                                    <icon-svg v-if="loading[tag.id + '_en']" name="loading" />
                                 </button>
-                                <button type="button" v-tooltip="getLang('copy_to_clipboard')"
-                                        @click="copy(tag.value)">
-                                    <icon-svg name="copy"/>
+                                <button type="button" v-tooltip="getLang('copy_to_clipboard')" @click="copy(tag.value)">
+                                    <icon-svg name="copy" />
                                 </button>
                                 <button type="button"
-                                        v-tooltip="getLang(tag.isFavorite ? 'remove_from_favorite': 'add_to_favorite')"
-                                        @click="onFavoriteTagClick(tag.id)">
-                                    <icon-svg v-if="tag.isFavorite" name="favorite-yes"/>
-                                    <icon-svg v-if="!tag.isFavorite" name="favorite-no"/>
+                                    v-tooltip="getLang(tag.isFavorite ? 'remove_from_favorite' : 'add_to_favorite')"
+                                    @click="onFavoriteTagClick(tag.id)">
+                                    <icon-svg v-if="tag.isFavorite" name="favorite-yes" />
+                                    <icon-svg v-if="!tag.isFavorite" name="favorite-no" />
                                 </button>
                                 <button type="button"
-                                        v-tooltip="getLang(tag.disabled ? 'enable_keyword': 'disable_keyword')"
-                                        @click="onDisabledTagClick(tag.id)">
-                                    <icon-svg v-if="!tag.disabled" name="disabled"/>
-                                    <icon-svg v-if="tag.disabled" name="enable"/>
+                                    v-tooltip="getLang(tag.disabled ? 'enable_keyword' : 'disable_keyword')"
+                                    @click="onDisabledTagClick(tag.id)">
+                                    <icon-svg v-if="!tag.disabled" name="disabled" />
+                                    <icon-svg v-if="tag.disabled" name="enable" />
                                 </button>
                             </div>
                         </div>
-                        <div class="prompt-local-language"
-                             v-show="!isEnglish && (tag.type === 'text' || !tag.type)">
+                        <div class="prompt-local-language" v-show="!isEnglish && (tag.type === 'text' || !tag.type)">
                             <div class="translate-to-local hover-scale-120"
-                                 v-tooltip="getLang('translate_keyword_to_local_language')"
-                                 @click="onTranslateToLocalClick(tag.id)" @mousedown.stop="" @mousemove.stop=""
-                                 @mouseup.stop="">
-                                <icon-svg v-if="!loading[tag.id + '_local']" name="translate"/>
-                                <icon-svg v-if="loading[tag.id + '_local']" name="loading"/>
+                                v-tooltip="getLang('translate_keyword_to_local_language')"
+                                @click="onTranslateToLocalClick(tag.id)" @mousedown.stop="" @mousemove.stop=""
+                                @mouseup.stop="">
+                                <icon-svg v-if="!loading[tag.id + '_local']" name="translate" />
+                                <icon-svg v-if="loading[tag.id + '_local']" name="loading" />
                             </div>
                             <div class="local-language">{{ tag.localValue }}</div>
                         </div>
                     </div>
-                    <div v-for="(tag, index) in tags" :key="tag.id" :class="['prompt-wrap', tag.type === 'wrap' ? 'wrap-tag' : '']" :data-id="tag.id" ref="promptTagWrap"
-                         @mousedown.stop="" @mousemove.stop="" @mouseup.stop=""></div>
+                    <div v-for="(tag, index) in tags" :key="tag.id"
+                        :class="['prompt-wrap', tag.type === 'wrap' ? 'wrap-tag' : '']" :data-id="tag.id"
+                        ref="promptTagWrap" @mousedown.stop="" @mousemove.stop="" @mouseup.stop=""></div>
                 </div>
                 <!--<div class="prompt-append">
                     <input type="text" class="scroll-hide svelte-4xt1ch input-tag-append" ref="promptTagAppend"
                            v-model="appendTag" :placeholder="getLang('please_enter_new_keyword')"
                            v-tooltip="getLang('enter_to_add')" @keydown="onAppendTagKeyDown">
                 </div>-->
-                <div class="drop-select-bg" ref="dropSelectBg" :style="{'display': dropIsStart ? 'block': 'none'}"></div>
-                <div class="drop-select-box" ref="dropSelectBox" :style="{'display': dropIsSelecting ? 'block': 'none', top: dropArea.top + 'px', 'left': dropArea.left + 'px', 'width': dropArea.width + 'px', 'height': dropArea.height + 'px'}"></div>
+                <div class="drop-select-bg" ref="dropSelectBg" :style="{ 'display': dropIsStart ? 'block' : 'none' }"></div>
+                <div class="drop-select-box" ref="dropSelectBox"
+                    :style="{ 'display': dropIsSelecting ? 'block' : 'none', top: dropArea.top + 'px', 'left': dropArea.left + 'px', 'width': dropArea.width + 'px', 'height': dropArea.height + 'px' }">
+                </div>
                 <div class="drop-select-btns" ref="dropSelectBtns"
-                     :style="{'display': dropIsEnd && dropTags.length ? 'flex': 'none', top: (dropEndY - 32) + 'px', 'left': dropEndX + 'px'}"
-                     @mousedown.stop="" @mousemove.stop="" @mouseup.stop="">
+                    :style="{ 'display': dropIsEnd && dropTags.length ? 'flex' : 'none', top: (dropEndY - 32) + 'px', 'left': dropEndX + 'px' }"
+                    @mousedown.stop="" @mousemove.stop="" @mouseup.stop="">
                     <div class="btns-title">{{ getLang('batch_operation') }}</div>
                     <button type="button" v-tooltip="getLang('copy_to_clipboard')" @click="onDropCopy">
-                        <icon-svg name="copy"/>
+                        <icon-svg name="copy" />
                     </button>
                     <button type="button" v-tooltip="getLang('add_to_favorite')" @click="onDropFavorite">
-                        <icon-svg name="favorite-no"/>
+                        <icon-svg name="favorite-no" />
                     </button>
                     <button type="button" v-tooltip="getLang('disable_keyword')" @click="onDropDisable">
-                        <icon-svg name="disabled"/>
+                        <icon-svg name="disabled" />
                     </button>
                     <button type="button" v-tooltip="getLang('enable_keyword')" @click="onDropEnable">
-                        <icon-svg name="enable"/>
+                        <icon-svg name="enable" />
                     </button>
                     <button type="button" @click="onDropDelete">
-                        <icon-svg name="remove"/>
+                        <icon-svg name="remove" />
                     </button>
                 </div>
             </div>
@@ -600,10 +586,10 @@ export default {
             let disabledTags = []
             this.tags.forEach((tag, index) => {
                 if (tag.disabled) {
-                    disabledTags.push({tag, index})
+                    disabledTags.push({ tag, index })
                 }
             })
-            disabledTags.forEach(({tag, index}) => {
+            disabledTags.forEach(({ tag, index }) => {
                 // 插入到 tags 中
                 tags.splice(index, 0, tag.value)
             })
@@ -739,7 +725,7 @@ export default {
             this.updatePrompt()
             const steps = this.steps.querySelector('input[type="number"]').value
             this.gradioAPI.tokenCounter(this.textarea.value, steps).then(res => {
-                const {token_count, max_length} = res
+                const { token_count, max_length } = res
                 this.counterText = `${token_count}/${max_length}`
             })
             if (this.tags.length) {
@@ -1009,7 +995,7 @@ export default {
                         let fromLang = tag.toLocal ? 'en_US' : this.languageCode
                         let toLang = tag.toLocal ? this.languageCode : 'en_US'
                         let groupKey = fromLang + '.' + toLang
-                        if (!groups[groupKey]) groups[groupKey] = {fromLang, toLang, tags: []}
+                        if (!groups[groupKey]) groups[groupKey] = { fromLang, toLang, tags: [] }
                         groups[groupKey].tags.push(tag)
                     })
                     const translateGroup = () => {
