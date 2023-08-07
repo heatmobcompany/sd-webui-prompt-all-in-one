@@ -471,6 +471,7 @@
                 "enhance": "Enhance",
                 "only_csv_on_auto": "Automatic translation uses only CSV translation (not network translation). To use both CSV and network translation, click the translate button manually.",
                 "one_translate_all_keywords": "Translate all keywords in one click",
+                "translate": "Translate",
                 "auto_translate": "Automatically translate after entering new keywords",
                 "is_remove_last_comma": "Remove the last comma in Prompt or not.<br/>When selected, Prompt output is \"aaa,bbb,ccc\".<br/>When unselected, Prompt output is \"aaa,bbb,ccc,\".",
                 "is_keep_weight_zero": "Keep the format of keywords with a weight of 0 or not.<br/>When selected, the keyword format is kept as \"(text:0)\".<br/>When unselected, the format is not kept as \"test\".",
@@ -2163,7 +2164,9 @@
         {
             "code": "vi_VN",
             "name": "Tiếng Việt (Việt Nam)",
-            "lang": {}
+            "lang": {
+                "translate": "Dịch"
+            }
         },
         {
             "code": "cy_GB",

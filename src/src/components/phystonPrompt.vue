@@ -122,33 +122,19 @@
                         </div>
                     </div>
                 </div> -->
-                <template v-if="!isEnglish">
-                    <div class="prompt-header-extend">
-                        <div class="extend-content">
-                            <div class="extend-btn-group">
-                                <template v-if="canOneTranslate">
-                                    <div class="extend-btn-item" v-tooltip="getLang('one_translate_all_keywords')"
-                                        @click="onTranslatesToLocalClick">
-                                        <icon-svg v-if="!loading['all_local']" class="hover-scale-120" name="translate" />
-                                        <icon-svg v-if="loading['all_local']" class="hover-scale-120" name="loading" />
-                                    </div>
-                                </template>
-                                <template v-else>
-                                    <div class="extend-btn-item" v-tooltip="getLang('translate_keywords_to_local_language')"
-                                        @click="onTranslatesToLocalClick">
-                                        <icon-svg v-if="!loading['all_local']" class="hover-scale-120" name="translate" />
-                                        <icon-svg v-if="loading['all_local']" class="hover-scale-120" name="loading" />
-                                    </div>
-                                    <div class="extend-btn-item" v-tooltip="getLang('translate_all_keywords_to_english')"
-                                        @click="onTranslatesToEnglishClick">
-                                        <icon-svg v-if="!loading['all_en']" class="hover-scale-120" name="english" />
-                                        <icon-svg v-if="loading['all_en']" class="hover-scale-120" name="loading" />
-                                    </div>
-                                </template>
+                <div class="prompt-header-extend">
+                    <div class="extend-content">
+                        <div class="extend-btn-group">
+                            <div class="extend-btn-item text-lang-name" v-tooltip="getLang('one_translate_all_keywords')"
+                                @click="onTranslatesToLocalClick" :disabled="isEnglish" :class="{ 'disabled': isEnglish }">
+                                <div v-if="!loading['all_local']" name="translate" class="hover-scale-120">
+                                    {{ getLang('translate') }}
+                                </div>
+                                <icon-svg v-if="loading['all_local']" class="hover-scale-120" name="loading" />
                             </div>
                         </div>
                     </div>
-                </template>
+                </div>
                 <!-- <div class="prompt-header-extend">
                     <div class="extend-content">
                         <div class="extend-btn-group">

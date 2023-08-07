@@ -1908,10 +1908,16 @@
     position: var(--pp-ph-phe-ec-ebg-extendBtnItem-position)
 }
 
-.physton-prompt .prompt-header .prompt-header-extend .extend-content .text-lang-name {
+.text-lang-name {
     width: 100% !important;
     padding-right: 10px !important;
     padding-left: 10px !important;
+}
+
+.extend-btn-item.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+    cursor: not-allowed;
 }
 
 .physton-prompt .prompt-header .prompt-header-extend .extend-content .extend-btn-group .extend-btn-item:first-child {
